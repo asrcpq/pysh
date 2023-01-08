@@ -41,6 +41,9 @@ ret = 0
 srcdir = pathlib.Path(sys.argv[0]).parent
 sys.path.append(f"{srcdir}/../pywk")
 import pywk
+sys.path.append(f"{srcdir}/../pyrl")
+import pyrl
 while True:
-	line = input(prompt(ret))
+	offset = prompt(ret)
+	line = pyrl.readline(offset)
 	ret = proc(line)

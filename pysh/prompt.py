@@ -16,4 +16,5 @@ def prompt(ret):
 	else:
 		# TODO: wlwrap bug overwrite this color
 		result += pw("\n> ", 1)
-	return result
+	print(result, end = "")
+	return 2
