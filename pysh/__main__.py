@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import traceback
+import sys, os, pathlib
 from shell import cmd
-from io import BytesIO
-import sys, os, platform
+from prompt import prompt
 
 def get_bins():
 	result = []
@@ -37,26 +37,9 @@ def proc(line):
 			print(traceback.format_exc())
 			return 127
 
-def pw(s, c):
-	return f"[3{c}m{s}[0m"
-
-static = pw(f"{os.getlogin()}@{platform.node()}:", 6)
-def prompt(ret):
-	result = ""
-	if ret != 0:
-		result += pw(f"{ret}<", 1)
-	result += static
-	cwd = os.getcwd()
-	result += pw(f"{cwd}", 5)
-	if os.access(cwd, os.W_OK):
-		result += "\n> "
-	else:
-		# TODO: wlwrap bug overwrite this color
-		result += pw("\n> ", 1)
-	return result
-
 ret = 0
-sys.path.append(f"{os.getcwd()}/../pywk")
+srcdir = pathlib.Path(sys.argv[0]).parent
+sys.path.append(f"{srcdir}/../pywk")
 import pywk
 while True:
 	line = input(prompt(ret))

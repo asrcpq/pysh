@@ -1,3 +1,9 @@
+# cmd
+# - escape
+# - builtin
+#   * cd
+# - system
+
 import os, subprocess
 import traceback
 import string
