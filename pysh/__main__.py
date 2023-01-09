@@ -2,8 +2,9 @@
 
 import traceback
 import sys, os, pathlib
-from shell import cmd
-from prompt import prompt
+from pysh.shell import cmd
+from pysh.prompt import prompt
+from pysh import bi
 
 def get_bins():
 	result = []
