@@ -2,6 +2,7 @@
 
 import traceback
 import sys, os, pathlib
+from time import time
 from pysh.shell import cmd
 from pysh.prompt import prompt
 from pysh import bi
@@ -14,10 +15,12 @@ def get_bins():
 				result.append(b)
 		except:
 			print(traceback.format_exc())
+	# print(len(result))
 	return result
 
+history = []
 bins = set(get_bins())
-print("load", len(bins), "binaries")
+os.environ["H"] = os.environ["HOME"] # because no tilde
 pyreserve = set(["import"])
 bins -= pyreserve
 shident = ["cd"]
@@ -40,11 +43,19 @@ def proc(line):
 
 ret = 0
 srcdir = pathlib.Path(sys.argv[0]).parent
+hist = f"{srcdir}/pysh_history"
 sys.path.append(f"{srcdir}/../pywk")
 import pywk
 sys.path.append(f"{srcdir}/../pyrl")
 import pyrl
 while True:
 	offset = prompt(ret)
-	line = pyrl.readline(offset)
-	ret = proc(line)
+	try:
+		line = pyrl.readline(offset)
+		history.append((int(time()), line))
+		ret = proc(line)
+	except EOFError:
+		break
+with open(hist, "a") as f:
+	for (time, cmd) in history:
+		print(time, cmd, file = f)
